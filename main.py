@@ -135,7 +135,20 @@ def test(epoch):
         torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
 
+for epoch in range(start_epoch, start_epoch+150):
+    train(epoch)
+    test(epoch)
 
-for epoch in range(start_epoch, start_epoch+200):
+optimizer = optim.SGD(net.parameters(), lr=args.lr/10,
+                      momentum=0.9, weight_decay=5e-4)
+
+for epoch in range(start_epoch+150, start_epoch+250):
+    train(epoch)
+    test(epoch)
+
+optimizer = optim.SGD(net.parameters(), lr=args.lr/100,
+                      momentum=0.9, weight_decay=5e-4)
+
+for epoch in range(start_epoch+250, start_epoch+350):
     train(epoch)
     test(epoch)
