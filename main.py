@@ -17,6 +17,7 @@ from utils import progress_bar
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
+parser.add_argument('--weight_decay', '-w', default=5e-4, type=float, help='weight_decay')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 args = parser.parse_args()
 
@@ -76,7 +77,7 @@ if args.resume:
     start_epoch = checkpoint['epoch']
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
+optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
 
 # Training
 def train(epoch):
@@ -140,14 +141,14 @@ for epoch in range(start_epoch, start_epoch+150):
     test(epoch)
 
 optimizer = optim.SGD(net.parameters(), lr=args.lr/10,
-                      momentum=0.9, weight_decay=5e-4)
+                      momentum=0.9, weight_decay=args.weight_decay)
 
 for epoch in range(start_epoch+150, start_epoch+250):
     train(epoch)
     test(epoch)
 
 optimizer = optim.SGD(net.parameters(), lr=args.lr/100,
-                      momentum=0.9, weight_decay=5e-4)
+                      momentum=0.9, weight_decay=args.weight_decay)
 
 for epoch in range(start_epoch+250, start_epoch+350):
     train(epoch)
